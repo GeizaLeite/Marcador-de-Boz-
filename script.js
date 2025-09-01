@@ -109,7 +109,7 @@ function renderCurrentPlayerCard() {
         if (cat === 'seguida') displayCatName = 'Seguida';
         if (cat === 'ful') displayCatName = 'Full';
         if (cat === 'quadrada') displayCatName = 'Quadrada';
-        if (cat === 'general') displayCatName = 'General'; // Nome corrigido aqui
+        if (cat === 'general') displayCatName = 'General';
         
         const score = player.scores[cat] !== null ? (player.scores[cat] === 0 ? 'X' : player.scores[cat]) : '';
         const scoredClass = score !== '' ? 'scored' : '';
@@ -185,7 +185,7 @@ function selectScore(score) {
         player.scores[activeCategory] = score;
         document.getElementById('scoreOptionsPanel').classList.add('hidden');
         
-        // CÓDIGO CORRIGIDO: Verifica se a jogada foi um "General de Boca"
+        // CÓDIGO CORRIGIDO: O jogo agora para imediatamente
         if (activeCategory === 'general' && score === 100) {
             handleGameEndImmediately(player);
             return;
@@ -197,16 +197,6 @@ function selectScore(score) {
 
         renderAll();
     }
-}
-
-// NOVA FUNÇÃO: Lida com a vitória por General de Boca
-function handleGameEndImmediately(winner) {
-    winner.wins++;
-    const score = Object.values(winner.scores).filter(s => s !== null).reduce((sum, current) => sum + current, 0);
-    showWinnerPopup(winner, score);
-
-    gameCount++;
-    document.getElementById('gameCount').innerText = gameCount;
 }
 
 function updateScoreDisplay() {
@@ -277,6 +267,14 @@ function endGame() {
     document.getElementById('gameCount').innerText = gameCount;
 }
 
+function handleGameEndImmediately(winner) {
+    winner.wins++;
+    const score = Object.values(winner.scores).filter(s => s !== null).reduce((sum, current) => sum + current, 0);
+    showWinnerPopup(winner, score);
+    gameCount++;
+    document.getElementById('gameCount').innerText = gameCount;
+}
+
 function showWinnerPopup(winner, score) {
     document.getElementById('winnerName').innerText = `${winner.name} VENCEU!`;
     document.getElementById('winnerScore').innerText = score;
@@ -300,6 +298,7 @@ function resetAll() {
     if (confirm("Tem certeza que deseja zerar o jogo? Todos os jogadores e vitórias serão perdidos.")) {
         players.splice(0, players.length);
         gameCount = 1;
+        document.getElementById('gameCount').innerText = gameCount;
         currentPlayerIndex = 0;
         document.getElementById('playerNameInput').value = '';
         
