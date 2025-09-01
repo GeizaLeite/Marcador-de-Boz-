@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcador de Bozó</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Marcador de Bozó</h1>
+        <div class="game-info">
+            Partida: <span id="gameCount">1</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="player-input-container">
+            <input type="text" id="playerNameInput" placeholder="Nome do jogador">
+            <button id="addPlayerButton">Adicionar Jogador</button>
+        </div>
+        
+        <div id="playerMenu" class="player-menu"></div>
+
+        <section id="gameContainer"></section>
+        
+        <div id="scoreOptionsPanel" class="hidden">
+            <h3>Escolha a pontuação:</h3>
+            <div id="scoreOptions"></div>
+            <button class="close-panel-button">Fechar</button>
+        </div>
+    </main>
+
+    <footer>
+        <button id="endGameButton" class="reset-button">Finalizar Partida</button>
+        <button id="resetAllButton" class="reset-all-button">Zerar Jogo</button>
+        <div class="scoreboard-container" id="scoreboard">
+            <h3>Placar de Vitórias</h3>
+            <ul id="scoreboardList"></ul>
+        </div>
+    </footer>
+        <div class="footer-info">
+    <p>Criado por Geiza Leite &copy; 2025</p>
+</div>
+
+    <div id="winnerPopup" class="hidden">
+        <div class="popup-content">
+            <h2 id="winnerName"></h2>
+            <p>Pontuação: <span id="winnerScore"></span></p>
+            <button id="closePopupButton">Fechar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
