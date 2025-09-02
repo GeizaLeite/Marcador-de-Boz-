@@ -7,9 +7,9 @@ const categoryScores = {
     quadra: [4, 8, 12, 16, 20],
     quina: [5, 10, 15, 20, 25],
     sena: [6, 12, 18, 24, 30],
-    seguida: [20],
-    ful: [30],
-    quadrada: [40],
+    seguida: [20,25],
+    ful: [10,15],
+    quadrada: [30,35],
     general: [40, 100]
 };
 
@@ -108,7 +108,7 @@ function renderCurrentPlayerCard() {
         let displayCatName = cat.charAt(0).toUpperCase() + cat.slice(1);
         if (cat === 'seguida') displayCatName = 'Seguida';
         if (cat === 'ful') displayCatName = 'Full';
-        if (cat === 'quadrada') displayCatName = 'Quadra';
+        if (cat === 'quadrada') displayCatName = 'Quadrada';
         if (cat === 'general') displayCatName = 'General';
         
         const score = player.scores[cat] !== null ? (player.scores[cat] === 0 ? 'X' : player.scores[cat]) : '';
