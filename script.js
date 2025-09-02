@@ -7,9 +7,9 @@ const categoryScores = {
     quadra: [4, 8, 12, 16, 20],
     quina: [5, 10, 15, 20, 25],
     sena: [6, 12, 18, 24, 30],
-    seguida: [20,25],
-    ful: [10,15],
-    quadrada: [30,35],
+    seguida: [20],
+    ful: [30],
+    quadrada: [40],
     general: [40, 100]
 };
 
@@ -108,7 +108,7 @@ function renderCurrentPlayerCard() {
         let displayCatName = cat.charAt(0).toUpperCase() + cat.slice(1);
         if (cat === 'seguida') displayCatName = 'Seguida';
         if (cat === 'ful') displayCatName = 'Full';
-        if (cat === 'quadrada') displayCatName = 'Quadrada';
+        if (cat === 'quadrada') displayCatName = 'Quadra';
         if (cat === 'general') displayCatName = 'General';
         
         const score = player.scores[cat] !== null ? (player.scores[cat] === 0 ? 'X' : player.scores[cat]) : '';
@@ -129,7 +129,6 @@ function renderCurrentPlayerCard() {
             ${gridHtml}
         </div>
         <p class="total-score">Total: <span id="total-${player.id}">${Object.values(player.scores).filter(s => s !== null).reduce((sum, current) => sum + current, 0)}</span></p>
-        <p class="win-counter">Vitórias: <span id="wins-${player.id}">${player.wins}</span></p>
     `;
 
     playerCard.innerHTML = cardContent;
@@ -185,9 +184,13 @@ function selectScore(score) {
         player.scores[activeCategory] = score;
         document.getElementById('scoreOptionsPanel').classList.add('hidden');
         
-        // CÓDIGO CORRIGIDO: O jogo agora para imediatamente
         if (activeCategory === 'general' && score === 100) {
             handleGameEndImmediately(player);
+            return;
+        }
+
+        if (checkIfGameIsOver()) {
+            endGame();
             return;
         }
 
@@ -199,8 +202,15 @@ function selectScore(score) {
     }
 }
 
-function updateScoreDisplay() {
-    // A função de renderização já faz isso
+function checkIfGameIsOver() {
+    for (const player of players) {
+        for (const cat of categories) {
+            if (player.scores[cat] === null) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 function handleRemovePlayer(event) {
@@ -261,7 +271,7 @@ function endGame() {
     });
 
     winner.wins++;
-    showWinnerPopup(winner, highestScore);
+    showFinalScoreboard(winner);
     
     gameCount++;
     document.getElementById('gameCount').innerText = gameCount;
@@ -269,15 +279,25 @@ function endGame() {
 
 function handleGameEndImmediately(winner) {
     winner.wins++;
-    const score = Object.values(winner.scores).filter(s => s !== null).reduce((sum, current) => sum + current, 0);
-    showWinnerPopup(winner, score);
+    showFinalScoreboard(winner);
     gameCount++;
     document.getElementById('gameCount').innerText = gameCount;
 }
 
-function showWinnerPopup(winner, score) {
-    document.getElementById('winnerName').innerText = `${winner.name} VENCEU!`;
-    document.getElementById('winnerScore').innerText = score;
+function showFinalScoreboard(winner) {
+    const winnerNameElement = document.getElementById('winnerName');
+    winnerNameElement.innerText = `${winner.name} VENCEU!`;
+    
+    const finalScoresList = document.getElementById('finalScores');
+    finalScoresList.innerHTML = '';
+    
+    players.forEach(player => {
+        const totalScore = Object.values(player.scores).filter(s => s !== null).reduce((sum, current) => sum + current, 0);
+        const scoreItem = document.createElement('p');
+        scoreItem.innerText = `${player.name}: ${totalScore} pontos`;
+        finalScoresList.appendChild(scoreItem);
+    });
+
     document.getElementById('winnerPopup').classList.remove('hidden');
 }
 
